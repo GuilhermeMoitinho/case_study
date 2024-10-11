@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14.3
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: my_user    
+      POSTGRES_PASSWORD: my_password  
+      POSTGRES_DB: case_study        
+    ports:
+      - "5432:5432"  
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+
+  case_study:
+    build:
+      context: ../src
+      dockerfile: Dockerfile  
+    container_name: case_study_container
+    ports:
+      - "8080:8080"  
+      - "8081:8081"  
+    depends_on:
+      - postgres 
+
+volumes:
+  postgres_data:  
